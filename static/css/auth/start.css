@@ -1,0 +1,284 @@
+/* =========================================
+   KNOWVIA — START PAGE
+   ========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: #050505;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow: hidden;
+}
+
+
+/* =========================================
+   PAGE
+   ========================================= */
+
+.start-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 30px;
+}
+
+
+/* Subtle background grid */
+
+.start-page::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background-image:
+        linear-gradient(#151515 1px, transparent 1px),
+        linear-gradient(90deg, #151515 1px, transparent 1px);
+
+    background-size: 55px 55px;
+    opacity: 0.22;
+
+    mask-image: linear-gradient(
+        to bottom,
+        transparent,
+        black 25%,
+        black 75%,
+        transparent
+    );
+
+    pointer-events: none;
+}
+
+
+/* =========================================
+   CONTENT
+   ========================================= */
+
+.start-container {
+    width: 100%;
+    max-width: 900px;
+    position: relative;
+    z-index: 1;
+}
+
+
+/* =========================================
+   BRAND
+   ========================================= */
+
+.start-brand {
+    text-align: center;
+    margin-bottom: 75px;
+}
+
+.start-brand h1 {
+    font-size: clamp(52px, 8vw, 86px);
+    font-weight: 700;
+    letter-spacing: -4px;
+    line-height: 1;
+}
+
+.start-brand p {
+    margin-top: 18px;
+    color: #777777;
+    font-size: 15px;
+    letter-spacing: 1px;
+}
+
+
+/* =========================================
+   MAIN CONTENT
+   ========================================= */
+
+.start-content {
+    text-align: center;
+}
+
+.start-content h2 {
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 500;
+    letter-spacing: -1.5px;
+}
+
+.start-description {
+    max-width: 520px;
+    margin: 18px auto 42px;
+    color: #777777;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+
+/* =========================================
+   ACTIONS
+   ========================================= */
+
+.start-actions {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+}
+
+.start-button {
+    min-width: 180px;
+    height: 54px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* Primary */
+
+.start-button-primary {
+    background: #ffffff;
+    color: #000000;
+    border: 1px solid #ffffff;
+}
+
+.start-button-primary:hover {
+    background: #e7e7e7;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(255, 255, 255, 0.08);
+}
+
+
+/* Secondary */
+
+.start-button-secondary {
+    background: rgba(255, 255, 255, 0.02);
+    color: #ffffff;
+    border: 1px solid #292929;
+}
+
+.start-button-secondary:hover {
+    background: #101010;
+    border-color: #555555;
+    transform: translateY(-2px);
+}
+
+
+/* =========================================
+   LOWER LINE
+   ========================================= */
+
+.start-footer {
+    text-align: center;
+    margin-top: 65px;
+
+    color: #444444;
+    font-size: 12px;
+}
+
+.start-footer span {
+    color: #666666;
+}
+
+
+/* =========================================
+   DECORATIVE CORNERS
+   ========================================= */
+
+.start-container::before,
+.start-container::after {
+    content: "";
+    position: absolute;
+
+    width: 45px;
+    height: 45px;
+
+    pointer-events: none;
+}
+
+.start-container::before {
+    top: -25px;
+    left: 0;
+
+    border-top: 1px solid #292929;
+    border-left: 1px solid #292929;
+}
+
+.start-container::after {
+    bottom: -25px;
+    right: 0;
+
+    border-bottom: 1px solid #292929;
+    border-right: 1px solid #292929;
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 600px) {
+
+    body {
+        overflow: auto;
+    }
+
+    .start-page {
+        padding: 25px 20px;
+    }
+
+    .start-brand {
+        margin-bottom: 55px;
+    }
+
+    .start-brand h1 {
+        letter-spacing: -2px;
+    }
+
+    .start-brand p {
+        font-size: 13px;
+    }
+
+    .start-content h2 {
+        font-size: 28px;
+    }
+
+    .start-description {
+        font-size: 14px;
+        margin-bottom: 32px;
+    }
+
+    .start-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .start-button {
+        width: 100%;
+        max-width: 360px;
+    }
+
+    .start-footer {
+        margin-top: 45px;
+    }
+
+    .start-container::before,
+    .start-container::after {
+        display: none;
+    }
+}

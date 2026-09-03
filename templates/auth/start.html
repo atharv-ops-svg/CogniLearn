@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Start — KnowVia</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/auth/start.css') }}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='images/knowvia.ico') }}"
+    />
+  </head>
+
+  <body>
+    <main class="start-page">
+      <div class="start-container">
+        <!-- Brand -->
+        <section class="start-brand">
+          <h1>KnowVia</h1>
+          <p>SKILL EXCHANGE PLATFORM</p>
+        </section>
+
+        <!-- Main Content -->
+        <section class="start-content">
+          <h2>Ready to bridge skills?</h2>
+
+          <p class="start-description">
+            Share what you know, discover what you want to learn, and connect
+            with people who can help you grow.
+          </p>
+
+          <!-- Actions -->
+          <div class="start-actions">
+            <a
+              href="{{ url_for('signup') }}"
+              class="start-button start-button-primary"
+            >
+              Create Account
+            </a>
+
+            <a
+              href="{{ url_for('login') }}"
+              class="start-button start-button-secondary"
+            >
+              Log In
+            </a>
+          </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="start-footer">
+          <span>Learn.</span>
+          <span>Teach.</span>
+          <span>Connect.</span>
+        </footer>
+      </div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/auth/start.js') }}"></script>
+  </body>
+</html>
