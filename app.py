@@ -77,7 +77,6 @@ def current_time():
     """
     Return a UTC timestamp for database storage.
     """
-
     return datetime.now(
         timezone.utc
     ).isoformat()
@@ -88,7 +87,6 @@ def current_time():
 # =========================================================
 
 def get_db():
-
     db = sqlite3.connect(
         DATABASE
     )
@@ -106,13 +104,21 @@ def init_db():
         """
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+
             name TEXT NOT NULL,
+
             username TEXT NOT NULL UNIQUE,
+
             email TEXT NOT NULL UNIQUE,
+
             password TEXT NOT NULL,
+
             knows TEXT DEFAULT '',
+
             wants_to_learn TEXT DEFAULT '',
+
             about TEXT DEFAULT '',
+
             created_at TEXT NOT NULL
         )
         """
@@ -150,9 +156,13 @@ def init_ai_db():
         """
         CREATE TABLE IF NOT EXISTS conversations (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+
             username TEXT NOT NULL,
+
             title TEXT NOT NULL DEFAULT 'New Chat',
+
             created_at TEXT NOT NULL,
+
             updated_at TEXT NOT NULL
         )
         """
@@ -166,10 +176,15 @@ def init_ai_db():
         """
         CREATE TABLE IF NOT EXISTS messages (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+
             conversation_id INTEGER NOT NULL,
+
             role TEXT NOT NULL,
+
             content TEXT NOT NULL,
+
             created_at TEXT NOT NULL,
+
             FOREIGN KEY (
                 conversation_id
             )
@@ -665,52 +680,11 @@ def profile():
 
     user = get_current_user()
 
-    if not user:
-
-        session.clear()
-
-        return redirect(
-            url_for("login")
-        )
-
     return render_template(
         "private/profile.html",
         user=user_for_template(user)
     )
 
-@app.route("/debug/database")
-def debug_database():
-    db = get_db()
-
-    tables = db.execute("""
-        SELECT name
-        FROM sqlite_master
-        WHERE type = 'table'
-        ORDER BY name
-    """).fetchall()
-
-    users = db.execute("""
-        SELECT id, username, email, created_at
-        FROM users
-        ORDER BY id
-    """).fetchall()
-
-    db.close()
-
-    return {
-        "database_path": DATABASE,
-        "tables": [row["name"] for row in tables],
-        "user_count": len(users),
-        "users": [
-            {
-                "id": row["id"],
-                "username": row["username"],
-                "email": row["email"],
-                "created_at": row["created_at"]
-            }
-            for row in users
-        ]
-    }
 
 # =========================================================
 # KV AI DATABASE HELPERS
@@ -986,16 +960,19 @@ def generate_chat_title(
 ):
 
     if not groq_client:
+
         return "New Chat"
 
     try:
 
         response = groq_client.chat.completions.create(
+
             model=GROQ_MODEL,
 
             messages=[
                 {
                     "role": "system",
+
                     "content": (
                         "You create short titles for AI conversations. "
                         "Create a clear title based ONLY on the user's "
@@ -1006,8 +983,10 @@ def generate_chat_title(
                         "Keep it between 2 and 7 words."
                     )
                 },
+
                 {
                     "role": "user",
+
                     "content": first_message
                 }
             ],
@@ -1025,6 +1004,10 @@ def generate_chat_title(
             .strip()
         )
 
+        # -------------------------------------------------
+        # CLEAN AI-GENERATED TITLE
+        # -------------------------------------------------
+
         title = title.strip(
             "\"'`"
         )
@@ -1034,8 +1017,10 @@ def generate_chat_title(
         )
 
         if not title:
+
             return "New Chat"
 
+        # Keep titles reasonably short
         if len(title) > 80:
 
             title = title[:80].rsplit(
@@ -1284,8 +1269,10 @@ def api_ai():
     # -----------------------------------------------------
 
     ai_messages = [
+
         {
             "role": "system",
+
             "content": (
                 "You are KV AI, the learning assistant "
                 "inside KnowVia.\n\n"
@@ -1298,8 +1285,7 @@ def api_ai():
                 "USER PROFILE:\n"
                 f"Name: {user_data.get('name', '')}\n"
                 f"Username: {user_data.get('username', '')}\n"
-                f"KNOWS: "
-                f"{', '.join(knows) if knows else 'None specified'}\n"
+                f"KNOWS: {', '.join(knows) if knows else 'None specified'}\n"
                 f"WANTS TO LEARN: "
                 f"{', '.join(wants_to_learn) if wants_to_learn else 'None specified'}\n"
                 f"ABOUT: {about or 'None specified'}\n\n"
@@ -1335,9 +1321,13 @@ def api_ai():
     try:
 
         response = groq_client.chat.completions.create(
+
             model=GROQ_MODEL,
+
             messages=ai_messages,
+
             temperature=0.7,
+
             max_tokens=2000
         )
 
@@ -1468,8 +1458,11 @@ def api_ai():
 
     return jsonify({
         "success": True,
+
         "reply": reply,
+
         "conversation_id": conversation_id,
+
         "title": title or "New Chat"
     })
 
@@ -1507,6 +1500,11 @@ def api_chat():
         return jsonify({
             "error": "Message is too long."
         }), 400
+
+    # -----------------------------------------------------
+    # REAL TWO-USER CHAT SYSTEM
+    # WILL BE IMPLEMENTED SEPARATELY.
+    # -----------------------------------------------------
 
     return jsonify({
         "reply": "Your message has been received."
@@ -1661,119 +1659,6 @@ def update_profile_about():
     return jsonify({
         "success": True,
         "about": about,
-    })
-
-
-# =========================================================
-# DELETE ACCOUNT
-# =========================================================
-
-@app.route(
-    "/api/profile/delete-account",
-    methods=["DELETE"]
-)
-@login_required
-def delete_account():
-
-    user_id = session.get(
-        "user_id"
-    )
-
-    if not user_id:
-
-        return jsonify({
-            "error": "You are not logged in."
-        }), 401
-
-    # -----------------------------------------------------
-    # GET CURRENT USER
-    # -----------------------------------------------------
-
-    db = get_db()
-
-    user = db.execute(
-        """
-        SELECT id, username
-        FROM users
-        WHERE id = ?
-        """,
-        (user_id,)
-    ).fetchone()
-
-    if not user:
-
-        db.close()
-
-        session.clear()
-
-        return jsonify({
-            "error": "Account not found."
-        }), 404
-
-    username = user["username"]
-
-    # -----------------------------------------------------
-    # DELETE USER'S KV AI DATA
-    # -----------------------------------------------------
-
-    ai_db = get_ai_db()
-
-    conversation_ids = ai_db.execute(
-        """
-        SELECT id
-        FROM conversations
-        WHERE username = ?
-        """,
-        (username,)
-    ).fetchall()
-
-    for conversation in conversation_ids:
-
-        ai_db.execute(
-            """
-            DELETE FROM messages
-            WHERE conversation_id = ?
-            """,
-            (conversation["id"],)
-        )
-
-    ai_db.execute(
-        """
-        DELETE FROM conversations
-        WHERE username = ?
-        """,
-        (username,)
-    )
-
-    ai_db.commit()
-
-    ai_db.close()
-
-    # -----------------------------------------------------
-    # DELETE USER ACCOUNT
-    # -----------------------------------------------------
-
-    db.execute(
-        """
-        DELETE FROM users
-        WHERE id = ?
-        """,
-        (user_id,)
-    )
-
-    db.commit()
-
-    db.close()
-
-    # -----------------------------------------------------
-    # CLEAR LOGIN SESSION
-    # -----------------------------------------------------
-
-    session.clear()
-
-    return jsonify({
-        "success": True,
-        "message": "Your KnowVia account has been deleted."
     })
 
 

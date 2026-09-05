@@ -332,8 +332,8 @@
 
     <script>
       window.KNOWVIA_PROFILE = {
-        knows: JSON.parse("{{ user.knows | tojson }}"),
-        wantsToLearn: JSON.parse("{{ user.wants_to_learn | tojson }}"),
+        knows: {{ user.knows | tojson }},
+        wantsToLearn: {{ user.wants_to_learn | tojson }}
       };
     </script>
 
