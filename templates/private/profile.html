@@ -2,124 +2,69 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Profile — KnowVia</title>
+    <title>Profile | KnowVia</title>
+
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='images/knowvia.png') }}"
+    />
 
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/private/profile.css') }}"
     />
-
-    <link
-      rel="icon"
-      type="image/png"
-      href="{{ url_for('static', filename='images/knowvia.ico') }}"
-    />
   </head>
 
   <body>
-    <!-- =====================================================
-         NAVBAR
-         ===================================================== -->
-
-    <nav class="navbar">
-      <a href="{{ url_for('dashboard') }}" class="nav-brand"> KnowVia </a>
-
-      <div class="nav-actions">
-        <a href="{{ url_for('dashboard') }}" class="nav-link"> Dashboard </a>
-
-        <a href="{{ url_for('chat') }}" class="nav-link"> Chat </a>
-
-        <a href="{{ url_for('profile') }}" class="nav-link active"> Profile </a>
-
-        <a href="{{ url_for('ai') }}" class="kv-ai-button"> KV AI </a>
-
-        <a href="{{ url_for('logout') }}" class="logout-button"> Logout </a>
-      </div>
-    </nav>
-
-    <!-- =====================================================
-         MAIN
-         ===================================================== -->
-
     <main class="profile-page">
-      <!-- =================================================
-           HEADER
-           ================================================= -->
+      <!-- =====================================================
+             HEADER
+             ===================================================== -->
 
       <header class="profile-header">
-        <div class="header-content">
-          <span class="system-label"> KNOWVIA / IDENTITY </span>
+        <div>
+          <h1>Your Profile</h1>
 
-          <div class="title-row">
-            <div class="profile-mark">ID</div>
-
-            <h1>Profile</h1>
-          </div>
-
-          <p>Your identity, skills and learning direction.</p>
+          <p>Manage your skills, learning goals, and information.</p>
         </div>
 
-        <div class="account-status">
-          <span class="status-dot"></span>
-
-          <span> ACCOUNT ACTIVE </span>
-        </div>
+        <a href="{{ url_for('dashboard') }}" class="back-button">
+          Back to Dashboard
+        </a>
       </header>
 
-      <!-- =================================================
-           IDENTITY
-           ================================================= -->
+      <!-- =====================================================
+             PROFILE INFORMATION
+             ===================================================== -->
 
-      <section class="profile-section">
-        <div class="section-heading">
-          <span class="section-number"> 01 </span>
+      <section class="profile-card">
+        <div class="profile-heading">
+          <h2>{{ user.name }}</h2>
 
-          <div>
-            <h2>Identity</h2>
-
-            <p>Your KnowVia account information.</p>
-          </div>
+          <p>@{{ user.username }}</p>
         </div>
 
-        <div class="identity-grid">
-          <div class="identity-item">
-            <span class="field-label"> NAME </span>
+        <div class="profile-divider"></div>
 
-            <strong> {{ user.name or "Not provided" }} </strong>
+        <!-- =================================================
+                 ABOUT
+                 ================================================= -->
+
+        <div class="profile-section">
+          <div class="section-heading">
+            <div>
+              <h3>About</h3>
+
+              <p>Tell the KnowVia community about yourself.</p>
+            </div>
+
+            <span id="about-count" class="character-count"> 0 / 1000 </span>
           </div>
 
-          <div class="identity-item">
-            <span class="field-label"> USERNAME </span>
-
-            <strong> @{{ user.username }} </strong>
-          </div>
-
-          <div class="identity-item">
-            <span class="field-label"> EMAIL </span>
-
-            <strong> {{ user.email }} </strong>
-          </div>
-        </div>
-      </section>
-
-      <!-- =================================================
-           ABOUT
-           ================================================= -->
-
-      <section class="profile-section">
-        <div class="section-heading">
-          <span class="section-number"> 02 </span>
-
-          <div>
-            <h2>About</h2>
-
-            <p>Give other learners a short introduction.</p>
-          </div>
-        </div>
-
-        <div class="about-editor">
           <textarea
             id="about-input"
             maxlength="1000"
@@ -128,212 +73,155 @@
 {{ user.about or "" }}</textarea
           >
 
-          <div class="editor-footer">
-            <span> OPTIONAL </span>
+          <div class="section-actions">
+            <button type="button" id="save-about" class="primary-button">
+              Save About
+            </button>
 
-            <span id="about-count">
-              {{ (user.about or "")|length }} / 1000
-            </span>
+            <span id="about-status" class="save-status"></span>
           </div>
         </div>
 
-        <div class="save-row">
-          <button type="button" id="save-about" class="save-button">
-            Save About
-          </button>
+        <div class="profile-divider"></div>
 
-          <span id="about-status" class="save-status" aria-live="polite"></span>
-        </div>
-      </section>
+        <!-- =================================================
+                 SKILLS
+                 ================================================= -->
 
-      <!-- =================================================
-           SKILLS
-           ================================================= -->
+        <div class="profile-section">
+          <div class="section-heading">
+            <div>
+              <h3>Skills</h3>
 
-      <section class="profile-section">
-        <div class="section-heading">
-          <span class="section-number"> 03 </span>
-
-          <div>
-            <h2>Skill Exchange</h2>
-
-            <p>Tell KnowVia what you can teach and what you want to learn.</p>
+              <p>Share what you know and what you want to learn.</p>
+            </div>
           </div>
-        </div>
 
-        <div class="skills-grid">
-          <!-- =========================================
-               KNOWS
-               ========================================= -->
+          <!-- =============================================
+                     KNOWS
+                     ============================================= -->
 
-          <div class="skill-panel">
-            <div class="skill-header">
-              <div class="skill-title">
-                <span class="skill-letter"> A </span>
+          <div class="skill-group">
+            <div class="skill-group-heading">
+              <div>
+                <h4>KNOWS</h4>
 
-                <div>
-                  <h3>KNOWS</h3>
-
-                  <span> CAN TEACH </span>
-                </div>
+                <p>Skills you can teach others.</p>
               </div>
 
-              <span class="skill-count">
-                <span id="knows-count"> {{ user.knows|length }} </span>
-
-                SKILLS
-              </span>
+              <span id="knows-count" class="skill-count"> 0 </span>
             </div>
-
-            <div class="skill-tags" id="knows-tags"></div>
 
             <div class="skill-input-row">
               <input
                 type="text"
                 id="knows-input"
                 placeholder="Add a skill..."
-                maxlength="50"
+                maxlength="100"
                 autocomplete="off"
               />
 
-              <button
-                type="button"
-                id="add-knows"
-                class="add-button"
-                aria-label="Add skill to KNOWS"
-              >
-                +
+              <button type="button" id="add-knows" class="secondary-button">
+                Add
               </button>
             </div>
+
+            <div id="knows-tags" class="skill-tags"></div>
           </div>
 
-          <!-- =========================================
-               WANTS TO LEARN
-               ========================================= -->
+          <!-- =============================================
+                     WANTS TO LEARN
+                     ============================================= -->
 
-          <div class="skill-panel">
-            <div class="skill-header">
-              <div class="skill-title">
-                <span class="skill-letter"> B </span>
+          <div class="skill-group">
+            <div class="skill-group-heading">
+              <div>
+                <h4>WANTS TO LEARN</h4>
 
-                <div>
-                  <h3>WANTS TO LEARN</h3>
-
-                  <span> LEARNING GOALS </span>
-                </div>
+                <p>Skills you want to learn.</p>
               </div>
 
-              <span class="skill-count">
-                <span id="wants-count"> {{ user.wants_to_learn|length }} </span>
-
-                SKILLS
-              </span>
+              <span id="wants-count" class="skill-count"> 0 </span>
             </div>
-
-            <div class="skill-tags" id="wants-tags"></div>
 
             <div class="skill-input-row">
               <input
                 type="text"
                 id="wants-input"
                 placeholder="Add a skill..."
-                maxlength="50"
+                maxlength="100"
                 autocomplete="off"
               />
 
-              <button
-                type="button"
-                id="add-wants"
-                class="add-button"
-                aria-label="Add skill to WANTS TO LEARN"
-              >
-                +
+              <button type="button" id="add-wants" class="secondary-button">
+                Add
               </button>
             </div>
+
+            <div id="wants-tags" class="skill-tags"></div>
+          </div>
+
+          <div class="section-actions">
+            <button type="button" id="save-skills" class="primary-button">
+              Save Skills
+            </button>
+
+            <span id="skills-status" class="save-status"></span>
           </div>
         </div>
 
-        <div class="save-row">
-          <button type="button" id="save-skills" class="save-button">
-            Save Skills
-          </button>
-
-          <span
-            id="skills-status"
-            class="save-status"
-            aria-live="polite"
-          ></span>
-        </div>
-      </section>
-
-      <!-- =================================================
-           ACCOUNT
-           ================================================= -->
-
-      <section class="profile-section account-section">
-        <div class="section-heading">
-          <span class="section-number"> 04 </span>
-
-          <div>
-            <h2>Account</h2>
-
-            <p>Manage your KnowVia account session.</p>
-          </div>
-        </div>
-
-        <div class="account-panel">
-          <div>
-            <span class="field-label"> SESSION </span>
-
-            <strong> ACTIVE </strong>
-          </div>
-
-          <a href="{{ url_for('logout') }}" class="account-logout"> Log out </a>
-        </div>
+        <div class="profile-divider"></div>
 
         <!-- =================================================
-             DANGER ZONE
-             ================================================= -->
+                 ACCOUNT
+                 ================================================= -->
 
-        <div class="danger-zone">
-          <div class="danger-content">
-            <span class="field-label"> DANGER ZONE </span>
+        <div class="profile-section danger-section">
+          <div class="section-heading">
+            <div>
+              <h3>Account</h3>
 
-            <h3>Delete Account</h3>
-
-            <p>
-              Permanently delete your KnowVia account, profile information,
-              skills, learning goals, and saved KV AI conversations.
-            </p>
+              <p>
+                Permanently delete your KnowVia account and saved information.
+              </p>
+            </div>
           </div>
 
-          <button
-            type="button"
-            id="delete-account"
-            class="delete-account-button"
-          >
+          <button type="button" id="delete-account" class="delete-account">
             Delete Account
           </button>
         </div>
       </section>
 
-      <!-- =================================================
-           FOOTER
-           ================================================= -->
+      <!-- =====================================================
+             FOOTER
+             ===================================================== -->
 
       <footer class="profile-footer">
-        <span> KNOWVIA </span>
-
-        <span> PROFILE / IDENTITY </span>
-
-        <span> SKILL EXCHANGE PLATFORM </span>
+        <span>SKILL EXCHANGE PLATFORM</span>
       </footer>
     </main>
 
+    <!-- =========================================================
+         PROFILE DATA
+         ========================================================= -->
+
+    <div
+      id="knowvia-profile-data"
+      data-knows="{{ user.knows | tojson | forceescape }}"
+      data-wants="{{ user.wants_to_learn | tojson | forceescape }}"
+      hidden
+    ></div>
+
     <script>
       window.KNOWVIA_PROFILE = {
-        knows: {{ user.knows | tojson }},
-        wantsToLearn: {{ user.wants_to_learn | tojson }}
+        knows: JSON.parse(
+          document.getElementById("knowvia-profile-data").dataset.knows,
+        ),
+
+        wantsToLearn: JSON.parse(
+          document.getElementById("knowvia-profile-data").dataset.wants,
+        ),
       };
     </script>
 
