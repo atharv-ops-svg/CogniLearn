@@ -20,18 +20,14 @@
   <body>
     <!-- NAVBAR -->
     <nav class="navbar">
-      <a href="{{ url_for('dashboard') }}" class="nav-brand"> KnowVia </a>
+      <a href="{{ url_for('dashboard') }}" class="nav-brand">KnowVia</a>
 
       <div class="nav-actions">
-        <a href="{{ url_for('dashboard') }}" class="nav-link"> Dashboard </a>
-
-        <a href="{{ url_for('chat') }}" class="nav-link active"> Chat </a>
-
-        <a href="{{ url_for('profile') }}" class="nav-link"> Profile </a>
-
-        <a href="{{ url_for('ai') }}" class="kv-ai-button"> KV AI </a>
-
-        <a href="{{ url_for('logout') }}" class="logout-button"> Logout </a>
+        <a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a>
+        <a href="{{ url_for('chat') }}" class="nav-link active">Chat</a>
+        <a href="{{ url_for('profile') }}" class="nav-link">Profile</a>
+        <a href="{{ url_for('ai') }}" class="kv-ai-button">KV AI</a>
+        <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
       </div>
     </nav>
 
@@ -41,9 +37,7 @@
       <header class="chat-header">
         <div>
           <div class="system-label">KNOWVIA / CONNECTION</div>
-
           <h1>Skill Exchange</h1>
-
           <p>Learn from someone. Teach someone.</p>
         </div>
 
@@ -55,27 +49,55 @@
 
       <!-- CHAT WORKSPACE -->
       <section class="chat-workspace">
-        <!-- CHAT INFO -->
+        <!-- MATCH SIDEBAR -->
         <aside class="chat-sidebar">
           <div class="sidebar-section">
-            <span class="sidebar-label"> YOUR ROLE </span>
+            <span class="sidebar-label">PEOPLE YOU CAN LEARN FROM</span>
 
-            <div class="role-box">
-              <strong> KNOWS </strong>
+            <div class="matches-list" id="matches-list" aria-live="polite">
+              <div class="matches-loading" id="matches-loading">
+                Finding skill matches...
+              </div>
+            </div>
 
-              <span> Share what you know </span>
+            <div class="matches-empty" id="matches-empty" hidden>
+              <span class="empty-match-symbol">⇄</span>
+              <strong>No matches yet</strong>
+              <p>
+                Add skills you know and want to learn on your profile to find
+                people you can learn from.
+              </p>
+              <a href="{{ url_for('profile') }}" class="profile-link">
+                Update Profile
+              </a>
+            </div>
+
+            <div class="matches-error" id="matches-error" hidden>
+              <strong>Could not load matches.</strong>
+              <p>Please refresh the page and try again.</p>
+              <button type="button" id="retry-matches">Retry</button>
             </div>
           </div>
 
           <div class="sidebar-divider"></div>
 
           <div class="sidebar-section">
-            <span class="sidebar-label"> LOOKING FOR </span>
+            <span class="sidebar-label">YOUR ROLE</span>
 
             <div class="role-box">
-              <strong> WANTS TO LEARN </strong>
+              <strong>KNOWS</strong>
+              <span>Share what you know</span>
+            </div>
+          </div>
 
-              <span> Discover something new </span>
+          <div class="sidebar-divider"></div>
+
+          <div class="sidebar-section">
+            <span class="sidebar-label">LOOKING FOR</span>
+
+            <div class="role-box">
+              <strong>WANTS TO LEARN</strong>
+              <span>Discover something new</span>
             </div>
           </div>
 
@@ -83,7 +105,6 @@
 
           <div class="sidebar-note">
             <span>TIP</span>
-
             <p>Ask questions, explain clearly, and help each other improve.</p>
           </div>
         </aside>
@@ -93,26 +114,23 @@
           <!-- CHAT TOP -->
           <div class="chat-topbar">
             <div class="partner-info">
-              <div class="partner-avatar">?</div>
+              <div class="partner-avatar" id="partner-avatar">?</div>
 
               <div>
-                <strong> Skill Partner </strong>
-
-                <span> Waiting for connection </span>
+                <strong id="partner-name">Skill Partner</strong>
+                <span id="partner-status">Waiting for connection</span>
               </div>
             </div>
 
-            <span class="chat-code"> SESSION / 01 </span>
+            <span class="chat-code">SESSION / 01</span>
           </div>
 
           <!-- MESSAGES -->
           <div class="chat-messages" id="chat-messages" aria-live="polite">
             <div class="chat-empty" id="chat-empty">
               <div class="empty-symbol">⇄</div>
-
               <h2>Ready to connect</h2>
-
-              <p>Your skill exchange conversation will appear here.</p>
+              <p>Choose a skill partner from the sidebar to begin.</p>
             </div>
           </div>
 
@@ -130,9 +148,8 @@
               ></textarea>
 
               <div class="input-meta">
-                <span> ENTER TO SEND </span>
-
-                <span id="character-count"> 0 / 2000 </span>
+                <span>ENTER TO SEND</span>
+                <span id="character-count">0 / 2000</span>
               </div>
             </div>
 
@@ -151,11 +168,9 @@
 
       <!-- FOOTER -->
       <footer class="chat-footer">
-        <span> KNOWVIA </span>
-
-        <span> PRIVATE SKILL EXCHANGE </span>
-
-        <span> END-TO-END SESSION </span>
+        <span>KNOWVIA</span>
+        <span>PRIVATE SKILL EXCHANGE</span>
+        <span>END-TO-END SESSION</span>
       </footer>
     </main>
 

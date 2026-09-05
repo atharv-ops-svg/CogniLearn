@@ -1512,6 +1512,118 @@ def api_chat():
 
 
 # =========================================================
+# USER MATCHING API
+# =========================================================
+
+@app.route("/api/matches")
+@login_required
+def api_matches():
+    current_user = get_current_user()
+
+    if not current_user:
+        return jsonify({
+            "error": "User not found."
+        }), 404
+
+    current_knows = parse_skills(current_user["knows"])
+    current_wants = parse_skills(current_user["wants_to_learn"])
+
+    # Case-insensitive lookup sets while preserving the original
+    # spelling for display in the response.
+    current_knows_map = {
+        skill.casefold(): skill
+        for skill in current_knows
+    }
+
+    current_wants_map = {
+        skill.casefold(): skill
+        for skill in current_wants
+    }
+
+    db = get_db()
+
+    users = db.execute(
+        """
+        SELECT
+            id,
+            name,
+            username,
+            knows,
+            wants_to_learn
+        FROM users
+        WHERE id != ?
+        """,
+        (current_user["id"],)
+    ).fetchall()
+
+    db.close()
+
+    matches = []
+
+    for user in users:
+        other_knows = parse_skills(user["knows"])
+        other_wants = parse_skills(user["wants_to_learn"])
+
+        other_knows_map = {
+            skill.casefold(): skill
+            for skill in other_knows
+        }
+
+        other_wants_map = {
+            skill.casefold(): skill
+            for skill in other_wants
+        }
+
+        # Skills the other person can teach the current user.
+        can_teach = [
+            other_knows_map[key]
+            for key in current_wants_map
+            if key in other_knows_map
+        ]
+
+        # Skills the current user can teach the other person.
+        can_learn = [
+            current_knows_map[key]
+            for key in other_wants_map
+            if key in current_knows_map
+        ]
+
+        if not can_teach and not can_learn:
+            continue
+
+        if can_teach and can_learn:
+            match_type = "perfect"
+            score = 2
+        else:
+            match_type = "learning"
+            score = 1
+
+        matches.append({
+            "id": user["id"],
+            "name": user["name"],
+            "username": user["username"],
+            "can_teach": can_teach,
+            "can_learn": can_learn,
+            "match_type": match_type,
+            "score": score
+        })
+
+    # Two-way matches first. For equal scores, keep a stable
+    # alphabetical order by name.
+    matches.sort(
+        key=lambda match: (
+            -match["score"],
+            match["name"].casefold()
+        )
+    )
+
+    return jsonify({
+        "success": True,
+        "matches": matches
+    })
+
+
+# =========================================================
 # PROFILE SKILLS API
 # =========================================================
 
