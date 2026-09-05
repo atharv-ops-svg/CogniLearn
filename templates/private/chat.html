@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Chat — KnowVia</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/private/chat.css') }}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='images/knowvia.ico') }}"
+    />
+  </head>
+
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <a href="{{ url_for('dashboard') }}" class="nav-brand"> KnowVia </a>
+
+      <div class="nav-actions">
+        <a href="{{ url_for('dashboard') }}" class="nav-link"> Dashboard </a>
+
+        <a href="{{ url_for('chat') }}" class="nav-link active"> Chat </a>
+
+        <a href="{{ url_for('profile') }}" class="nav-link"> Profile </a>
+
+        <a href="{{ url_for('ai') }}" class="kv-ai-button"> KV AI </a>
+
+        <a href="{{ url_for('logout') }}" class="logout-button"> Logout </a>
+      </div>
+    </nav>
+
+    <!-- CHAT PAGE -->
+    <main class="chat-page">
+      <!-- HEADER -->
+      <header class="chat-header">
+        <div>
+          <div class="system-label">KNOWVIA / CONNECTION</div>
+
+          <h1>Skill Exchange</h1>
+
+          <p>Learn from someone. Teach someone.</p>
+        </div>
+
+        <div class="connection-status">
+          <span class="status-dot"></span>
+          <span>READY</span>
+        </div>
+      </header>
+
+      <!-- CHAT WORKSPACE -->
+      <section class="chat-workspace">
+        <!-- CHAT INFO -->
+        <aside class="chat-sidebar">
+          <div class="sidebar-section">
+            <span class="sidebar-label"> YOUR ROLE </span>
+
+            <div class="role-box">
+              <strong> KNOWS </strong>
+
+              <span> Share what you know </span>
+            </div>
+          </div>
+
+          <div class="sidebar-divider"></div>
+
+          <div class="sidebar-section">
+            <span class="sidebar-label"> LOOKING FOR </span>
+
+            <div class="role-box">
+              <strong> WANTS TO LEARN </strong>
+
+              <span> Discover something new </span>
+            </div>
+          </div>
+
+          <div class="sidebar-divider"></div>
+
+          <div class="sidebar-note">
+            <span>TIP</span>
+
+            <p>Ask questions, explain clearly, and help each other improve.</p>
+          </div>
+        </aside>
+
+        <!-- CHAT -->
+        <div class="chat-container">
+          <!-- CHAT TOP -->
+          <div class="chat-topbar">
+            <div class="partner-info">
+              <div class="partner-avatar">?</div>
+
+              <div>
+                <strong> Skill Partner </strong>
+
+                <span> Waiting for connection </span>
+              </div>
+            </div>
+
+            <span class="chat-code"> SESSION / 01 </span>
+          </div>
+
+          <!-- MESSAGES -->
+          <div class="chat-messages" id="chat-messages" aria-live="polite">
+            <div class="chat-empty" id="chat-empty">
+              <div class="empty-symbol">⇄</div>
+
+              <h2>Ready to connect</h2>
+
+              <p>Your skill exchange conversation will appear here.</p>
+            </div>
+          </div>
+
+          <!-- INPUT -->
+          <form class="chat-input-area" id="chat-form">
+            <div class="input-wrapper">
+              <textarea
+                id="message-input"
+                name="message"
+                rows="1"
+                maxlength="2000"
+                placeholder="Type a message..."
+                autocomplete="off"
+                spellcheck="true"
+              ></textarea>
+
+              <div class="input-meta">
+                <span> ENTER TO SEND </span>
+
+                <span id="character-count"> 0 / 2000 </span>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              class="send-button"
+              id="send-button"
+              aria-label="Send message"
+            >
+              <span>Send</span>
+              <span class="send-arrow">↗</span>
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="chat-footer">
+        <span> KNOWVIA </span>
+
+        <span> PRIVATE SKILL EXCHANGE </span>
+
+        <span> END-TO-END SESSION </span>
+      </footer>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/private/chat.js') }}"></script>
+  </body>
+</html>

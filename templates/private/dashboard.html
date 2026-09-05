@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Dashboard — KnowVia</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/private/dashboard.css') }}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='images/knowvia.ico') }}"
+    />
+  </head>
+
+  <body>
+    <!-- NAVIGATION -->
+    <nav class="navbar">
+      <a href="{{ url_for('dashboard') }}" class="nav-brand"> KnowVia </a>
+
+      <div class="nav-actions">
+        <a href="{{ url_for('dashboard') }}" class="nav-link active">
+          Dashboard
+        </a>
+
+        <a href="{{ url_for('chat') }}" class="nav-link"> Chat </a>
+
+        <a href="{{ url_for('profile') }}" class="nav-link"> Profile </a>
+
+        <a href="{{ url_for('ai') }}" class="kv-ai-button"> KV AI </a>
+
+        <a href="{{ url_for('logout') }}" class="logout-button"> Logout </a>
+      </div>
+    </nav>
+
+    <!-- MAIN DASHBOARD -->
+    <main class="dashboard">
+      <!-- Background decoration -->
+      <div class="grid-background"></div>
+      <div class="background-line background-line-one"></div>
+      <div class="background-line background-line-two"></div>
+
+      <!-- WELCOME -->
+      <section class="welcome-section">
+        <div class="system-label">KNOWVIA / DASHBOARD</div>
+
+        <h1>
+          Welcome,
+          <span>{{ user.name or user.username }}</span>.
+        </h1>
+
+        <p>Your skills. Your goals. Your next connection.</p>
+      </section>
+
+      <!-- SKILL EXCHANGE -->
+      <section class="skills-section">
+        <div class="section-header">
+          <div>
+            <span class="section-number">01</span>
+            <h2>SKILL EXCHANGE</h2>
+          </div>
+
+          <span class="section-status"> ACTIVE </span>
+        </div>
+
+        <div class="skills-interface">
+          <!-- KNOWS -->
+          <div class="skill-panel">
+            <div class="panel-header">
+              <span class="panel-number"> 01 </span>
+
+              <span class="panel-type"> CAN TEACH </span>
+            </div>
+
+            <div class="panel-title">KNOWS</div>
+
+            <p class="panel-description">
+              Skills you can share with another person.
+            </p>
+
+            <div class="skill-list">
+              {% if user.knows %} {% for skill in user.knows %}
+
+              <span class="skill-tag"> {{ skill }} </span>
+
+              {% endfor %} {% else %}
+
+              <div class="empty-state">
+                <span class="empty-icon"> + </span>
+
+                <div>
+                  <strong> No skills added </strong>
+
+                  <small> Add something you know. </small>
+                </div>
+              </div>
+
+              {% endif %}
+            </div>
+
+            <a href="{{ url_for('profile') }}" class="panel-link">
+              Manage skills
+              <span>→</span>
+            </a>
+          </div>
+
+          <!-- CONNECTION -->
+          <div class="exchange-symbol">
+            <span>⇄</span>
+          </div>
+
+          <!-- WANTS -->
+          <div class="skill-panel">
+            <div class="panel-header">
+              <span class="panel-number"> 02 </span>
+
+              <span class="panel-type"> WANT TO LEARN </span>
+            </div>
+
+            <div class="panel-title">WANTS TO LEARN</div>
+
+            <p class="panel-description">Skills you want to discover.</p>
+
+            <div class="skill-list">
+              {% if user.wants_to_learn %} {% for skill in user.wants_to_learn
+              %}
+
+              <span class="skill-tag"> {{ skill }} </span>
+
+              {% endfor %} {% else %}
+
+              <div class="empty-state">
+                <span class="empty-icon"> + </span>
+
+                <div>
+                  <strong> No goals added </strong>
+
+                  <small> Add something you want to learn. </small>
+                </div>
+              </div>
+
+              {% endif %}
+            </div>
+
+            <a href="{{ url_for('profile') }}" class="panel-link">
+              Manage learning goals
+              <span>→</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- COMMAND CENTER -->
+      <section class="command-section">
+        <div class="section-header">
+          <div>
+            <span class="section-number">02</span>
+            <h2>COMMAND CENTER</h2>
+          </div>
+
+          <span class="section-status"> READY </span>
+        </div>
+
+        <div class="command-grid">
+          <!-- CHAT -->
+          <a href="{{ url_for('chat') }}" class="command-card">
+            <div class="command-top">
+              <span class="command-index"> 01 </span>
+
+              <span class="command-arrow"> ↗ </span>
+            </div>
+
+            <div class="command-content">
+              <span class="command-label"> CONNECT </span>
+
+              <h3>Skill Exchange</h3>
+
+              <p>Connect with another learner and exchange knowledge.</p>
+            </div>
+          </a>
+
+          <!-- PROFILE -->
+          <a href="{{ url_for('profile') }}" class="command-card">
+            <div class="command-top">
+              <span class="command-index"> 02 </span>
+
+              <span class="command-arrow"> ↗ </span>
+            </div>
+
+            <div class="command-content">
+              <span class="command-label"> IDENTITY </span>
+
+              <h3>Your Profile</h3>
+
+              <p>Manage your skills, goals and personal information.</p>
+            </div>
+          </a>
+
+          <!-- AI -->
+          <a href="{{ url_for('ai') }}" class="command-card ai-card">
+            <div class="command-top">
+              <span class="command-index"> 03 </span>
+
+              <span class="command-arrow"> ↗ </span>
+            </div>
+
+            <div class="command-content">
+              <span class="command-label"> INTELLIGENCE </span>
+
+              <h3>KV AI</h3>
+
+              <p>Get help understanding your learning journey.</p>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="dashboard-footer">
+        <span> KNOWVIA </span>
+
+        <span> SKILL EXCHANGE PLATFORM </span>
+
+        <span> SYSTEM ONLINE </span>
+      </footer>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/private/dashboard.js') }}"></script>
+  </body>
+</html>

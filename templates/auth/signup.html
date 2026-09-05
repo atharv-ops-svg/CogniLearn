@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Create Account — KnowVia</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/auth/signup.css') }}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='images/knowvia.ico') }}"
+    />
+  </head>
+
+  <body>
+    <div class="page-grid"></div>
+
+    <main class="auth-page">
+      <!-- BRAND -->
+      <a href="{{ url_for('index') }}" class="brand"> KnowVia </a>
+
+      <!-- SYSTEM STATUS -->
+      <div class="system-label">
+        <span class="status-dot"></span>
+        KNOWVIA / REGISTRATION
+      </div>
+
+      <!-- AUTH LAYOUT -->
+      <div class="auth-layout">
+        <!-- INTRO -->
+        <section class="intro">
+          <span class="intro-number">02</span>
+
+          <h1>
+            Build<br />
+            <span>your bridge.</span>
+          </h1>
+
+          <p>Tell KnowVia what you know and what you want to learn.</p>
+
+          <!-- SKILL PREVIEW -->
+          <div class="skill-preview">
+            <div>
+              <span>KNOWS</span>
+              <strong>Your skills</strong>
+            </div>
+
+            <div class="exchange-symbol">⇄</div>
+
+            <div>
+              <span>WANTS TO LEARN</span>
+              <strong>Your goals</strong>
+            </div>
+          </div>
+        </section>
+
+        <!-- SIGNUP PANEL -->
+        <section class="auth-panel">
+          <div class="panel-header">
+            <div>
+              <span class="panel-label"> CREATE YOUR PROFILE </span>
+
+              <h2>Create account.</h2>
+            </div>
+
+            <span class="panel-index"> 01 / 01 </span>
+          </div>
+
+          {% if error %}
+          <div class="auth-error">{{ error }}</div>
+          {% endif %}
+
+          <!-- SIGNUP FORM -->
+          <form method="POST" autocomplete="off">
+            <!-- NAME -->
+            <div class="field">
+              <label for="name"> NAME </label>
+
+              <div class="input-wrap">
+                <span class="input-prefix"> 01 </span>
+
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  placeholder="Your name"
+                  autocomplete="off"
+                  autocapitalize="words"
+                  spellcheck="false"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- USERNAME -->
+            <div class="field">
+              <label for="username"> USERNAME </label>
+
+              <div class="input-wrap">
+                <span class="input-prefix"> 02 </span>
+
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  placeholder="Choose a username"
+                  autocomplete="off"
+                  inputmode="text"
+                  autocapitalize="none"
+                  autocorrect="off"
+                  spellcheck="false"
+                  data-lpignore="true"
+                  data-1p-ignore="true"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- EMAIL -->
+            <div class="field">
+              <label for="email"> EMAIL </label>
+
+              <div class="input-wrap">
+                <span class="input-prefix"> 03 </span>
+
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  autocomplete="off"
+                  inputmode="text"
+                  autocapitalize="none"
+                  autocorrect="off"
+                  spellcheck="false"
+                  data-lpignore="true"
+                  data-1p-ignore="true"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="field">
+              <label for="password"> PASSWORD </label>
+
+              <div class="input-wrap password-wrap">
+                <span class="input-prefix"> 04 </span>
+
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="Create a password"
+                  autocomplete="off"
+                  required
+                />
+
+                <button
+                  type="button"
+                  class="password-toggle"
+                  data-target="password"
+                  aria-label="Show password"
+                >
+                  SHOW
+                </button>
+              </div>
+            </div>
+
+            <!-- CONFIRM PASSWORD -->
+            <div class="field">
+              <label for="confirm_password"> CONFIRM PASSWORD </label>
+
+              <div class="input-wrap password-wrap">
+                <span class="input-prefix"> 05 </span>
+
+                <input
+                  type="password"
+                  id="confirm_password"
+                  name="confirm_password"
+                  placeholder="Confirm your password"
+                  autocomplete="off"
+                  required
+                />
+
+                <button
+                  type="button"
+                  class="password-toggle"
+                  data-target="confirm_password"
+                  aria-label="Show password"
+                >
+                  SHOW
+                </button>
+              </div>
+            </div>
+
+            <!-- SUBMIT -->
+            <button type="submit" class="submit-button">
+              <span>CREATE ACCOUNT</span>
+              <span class="arrow">→</span>
+            </button>
+          </form>
+
+          <!-- BOTTOM LINK -->
+          <div class="panel-bottom">
+            <span> ALREADY REGISTERED? </span>
+
+            <a href="{{ url_for('login') }}">
+              LOG IN
+              <span>→</span>
+            </a>
+          </div>
+        </section>
+      </div>
+
+      <!-- DECORATIVE CORNERS -->
+      <div class="corner corner-top"></div>
+      <div class="corner corner-bottom"></div>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/auth/signup.js') }}"></script>
+  </body>
+</html>

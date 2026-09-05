@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>KV AI — KnowVia</title>
+
+    <meta
+      name="description"
+      content="KV AI — your KnowVia learning assistant."
+    />
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/private/ai.css') }}"
+    />
+
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='images/knowvia.ico') }}"
+    />
+
+    <!-- Markdown + Security -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
+  </head>
+
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <a href="{{ url_for('dashboard') }}" class="nav-brand"> KnowVia </a>
+
+      <div class="nav-links">
+        <a href="{{ url_for('dashboard') }}"> Dashboard </a>
+
+        <a href="{{ url_for('chat') }}"> Chat </a>
+
+        <a href="{{ url_for('ai') }}" class="active"> KV AI </a>
+
+        <a href="{{ url_for('profile') }}"> Profile </a>
+
+        <a href="{{ url_for('logout') }}" class="logout-button"> Logout </a>
+      </div>
+    </nav>
+
+    <!-- AI PAGE -->
+    <main class="ai-page">
+      <section class="ai-shell">
+        <!-- SIDEBAR -->
+        <aside class="ai-sidebar">
+          <div class="sidebar-section">
+            <span class="sidebar-label"> SYSTEM </span>
+
+            <span class="sidebar-value"> KV AI </span>
+          </div>
+
+          <div class="sidebar-section">
+            <span class="sidebar-label"> CONTEXT </span>
+
+            <span class="sidebar-value"> Your learning assistant </span>
+          </div>
+
+          <div class="sidebar-section">
+            <span class="sidebar-label"> STATUS </span>
+
+            <div class="ai-status">
+              <span class="ai-status-dot"></span>
+              <span>Online</span>
+            </div>
+          </div>
+        </aside>
+
+        <!-- AI MAIN -->
+        <section class="ai-main">
+          <!-- HEADER -->
+          <header class="ai-header">
+            <div>
+              <span class="ai-system-label"> KNOWVIA / INTELLIGENCE </span>
+
+              <h1 class="ai-title">KV AI</h1>
+
+              <p class="ai-subtitle">KnowVia Learning Assistant</p>
+            </div>
+          </header>
+
+          <!-- CHAT -->
+          <div class="ai-chat">
+            <div id="ai-messages" class="ai-messages">
+              <!-- WELCOME -->
+              <div class="ai-welcome" id="ai-welcome">
+                <div class="welcome-label">READY</div>
+
+                <h2>How can I help you learn?</h2>
+
+                <p>
+                  Ask KV AI about a topic, explain something you are learning,
+                  or get help connecting what you know with what you want to
+                  learn.
+                </p>
+
+                <div class="ai-suggestions">
+                  <button
+                    type="button"
+                    class="ai-suggestion"
+                    data-message="Help me learn something new."
+                  >
+                    Learn something new
+                  </button>
+
+                  <button
+                    type="button"
+                    class="ai-suggestion"
+                    data-message="Explain a topic I want to learn."
+                  >
+                    Explain a topic
+                  </button>
+
+                  <button
+                    type="button"
+                    class="ai-suggestion"
+                    data-message="Help me connect what I know with what I want to learn."
+                  >
+                    Connect my skills
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- INPUT -->
+            <div class="ai-input-area">
+              <form id="ai-form" class="ai-input-wrapper">
+                <textarea
+                  id="ai-input"
+                  name="message"
+                  placeholder="Ask KV AI something..."
+                  maxlength="4000"
+                  rows="1"
+                  autocomplete="off"
+                  aria-label="Message KV AI"
+                ></textarea>
+
+                <button
+                  type="submit"
+                  id="ai-send-button"
+                  class="ai-send-button"
+                >
+                  Send
+                </button>
+              </form>
+
+              <div class="ai-input-meta">
+                <span> ENTER TO SEND · SHIFT + ENTER FOR NEW LINE </span>
+
+                <span id="ai-character-count"> 0 / 4000 </span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/private/ai.js') }}"></script>
+  </body>
+</html>

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Log In — KnowVia</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/auth/login.css') }}"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='images/knowvia.ico') }}"
+    />
+  </head>
+
+  <body>
+    <div class="page-grid"></div>
+
+    <main class="auth-page">
+      <!-- BRAND -->
+      <a href="{{ url_for('index') }}" class="brand"> KnowVia </a>
+
+      <!-- SYSTEM STATUS -->
+      <div class="system-label">
+        <span class="status-dot"></span>
+        KNOWVIA / ACCESS
+      </div>
+
+      <!-- AUTH LAYOUT -->
+      <div class="auth-layout">
+        <!-- INTRO -->
+        <section class="intro">
+          <span class="intro-number">01</span>
+
+          <h1>
+            Sign<br />
+            <span>in.</span>
+          </h1>
+
+          <p>Continue learning, teaching, and building your bridge.</p>
+        </section>
+
+        <!-- LOGIN PANEL -->
+        <section class="auth-panel">
+          <div class="panel-header">
+            <div>
+              <span class="panel-label"> WELCOME BACK </span>
+
+              <h2>Access your account.</h2>
+            </div>
+
+            <span class="panel-index"> 01 / 01 </span>
+          </div>
+
+          {% if error %}
+          <div class="auth-error">{{ error }}</div>
+          {% endif %}
+
+          <!-- LOGIN FORM -->
+          <form method="POST" autocomplete="off">
+            <!-- USERNAME -->
+            <div class="field">
+              <label for="username"> USERNAME </label>
+
+              <div class="input-wrap">
+                <span class="input-prefix"> 01 </span>
+
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  placeholder="Enter your username"
+                  autocomplete="off"
+                  inputmode="text"
+                  autocapitalize="none"
+                  autocorrect="off"
+                  spellcheck="false"
+                  data-lpignore="true"
+                  data-1p-ignore="true"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="field">
+              <label for="password"> PASSWORD </label>
+
+              <div class="input-wrap">
+                <span class="input-prefix"> 02 </span>
+
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder="Enter your password"
+                  autocomplete="off"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- SUBMIT -->
+            <button type="submit" class="submit-button">
+              <span>LOG IN</span>
+              <span class="arrow">→</span>
+            </button>
+          </form>
+
+          <!-- BOTTOM LINK -->
+          <div class="panel-bottom">
+            <span> NEW TO KNOWVIA? </span>
+
+            <a href="{{ url_for('signup') }}">
+              CREATE ACCOUNT
+              <span>→</span>
+            </a>
+          </div>
+        </section>
+      </div>
+
+      <!-- DECORATIVE CORNERS -->
+      <div class="corner corner-top"></div>
+      <div class="corner corner-bottom"></div>
+    </main>
+  </body>
+</html>
