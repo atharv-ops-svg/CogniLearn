@@ -124,6 +124,27 @@ def init_db():
         """
     )
 
+    db.execute(
+        """
+        CREATE TABLE IF NOT EXISTS chat_messages (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            sender_id INTEGER NOT NULL,
+            receiver_id INTEGER NOT NULL,
+            message TEXT NOT NULL,
+            created_at TEXT NOT NULL,
+            FOREIGN KEY (sender_id) REFERENCES users(id),
+            FOREIGN KEY (receiver_id) REFERENCES users(id)
+        )
+        """
+    )
+
+    db.execute(
+        """
+        CREATE INDEX IF NOT EXISTS idx_chat_messages_pair
+        ON chat_messages(sender_id, receiver_id, id)
+        """
+    )
+
     db.commit()
 
     db.close()
@@ -1477,37 +1498,111 @@ def api_ai():
 )
 @login_required
 def api_chat():
-
-    data = request.get_json(
-        silent=True
-    ) or {}
-
-    message = str(
-        data.get(
-            "message",
-            ""
-        )
-    ).strip()
+    data = request.get_json(silent=True) or {}
+    message = str(data.get("message", "")).strip()
+    receiver_id = data.get("receiver_id")
 
     if not message:
+        return jsonify({"error": "Message cannot be empty."}), 400
 
-        return jsonify({
-            "error": "Message cannot be empty."
-        }), 400
+    if len(message) > 2000:
+        return jsonify({"error": "Message is too long."}), 400
 
-    if len(message) > 4000:
+    try:
+        receiver_id = int(receiver_id)
+    except (TypeError, ValueError):
+        return jsonify({"error": "A valid receiver is required."}), 400
 
-        return jsonify({
-            "error": "Message is too long."
-        }), 400
+    sender_id = session["user_id"]
 
-    # -----------------------------------------------------
-    # REAL TWO-USER CHAT SYSTEM
-    # WILL BE IMPLEMENTED SEPARATELY.
-    # -----------------------------------------------------
+    if receiver_id == sender_id:
+        return jsonify({"error": "You cannot message yourself."}), 400
+
+    db = get_db()
+    receiver = db.execute(
+        "SELECT id, name, username FROM users WHERE id = ?",
+        (receiver_id,)
+    ).fetchone()
+
+    if not receiver:
+        db.close()
+        return jsonify({"error": "Receiver not found."}), 404
+
+    created_at = current_time()
+    cursor = db.execute(
+        """
+        INSERT INTO chat_messages (
+            sender_id, receiver_id, message, created_at
+        ) VALUES (?, ?, ?, ?)
+        """,
+        (sender_id, receiver_id, message, created_at)
+    )
+    db.commit()
+    message_id = cursor.lastrowid
+    db.close()
 
     return jsonify({
-        "reply": "Your message has been received."
+        "success": True,
+        "message": {
+            "id": message_id,
+            "sender_id": sender_id,
+            "receiver_id": receiver_id,
+            "message": message,
+            "created_at": created_at
+        }
+    })
+
+
+@app.route(
+    "/api/chat/<int:partner_id>",
+    methods=["GET"]
+)
+@login_required
+def get_chat_messages(partner_id):
+    current_user_id = session["user_id"]
+
+    if partner_id == current_user_id:
+        return jsonify({"error": "Invalid chat partner."}), 400
+
+    db = get_db()
+    partner = db.execute(
+        "SELECT id, name, username FROM users WHERE id = ?",
+        (partner_id,)
+    ).fetchone()
+
+    if not partner:
+        db.close()
+        return jsonify({"error": "Chat partner not found."}), 404
+
+    rows = db.execute(
+        """
+        SELECT id, sender_id, receiver_id, message, created_at
+        FROM chat_messages
+        WHERE (sender_id = ? AND receiver_id = ?)
+           OR (sender_id = ? AND receiver_id = ?)
+        ORDER BY id ASC
+        """,
+        (current_user_id, partner_id, partner_id, current_user_id)
+    ).fetchall()
+    db.close()
+
+    return jsonify({
+        "success": True,
+        "partner": {
+            "id": partner["id"],
+            "name": partner["name"],
+            "username": partner["username"]
+        },
+        "messages": [
+            {
+                "id": row["id"],
+                "sender_id": row["sender_id"],
+                "receiver_id": row["receiver_id"],
+                "message": row["message"],
+                "created_at": row["created_at"]
+            }
+            for row in rows
+        ]
     })
 
 
