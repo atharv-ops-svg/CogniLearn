@@ -971,6 +971,15 @@ def delete_ai_conversation(
         "success": True
     })
 
+    
+@app.route("/settings")
+def settings():
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    return render_template("private/settings.html")
+
+
 
 # =========================================================
 # GENERATE AI CHAT TITLE
