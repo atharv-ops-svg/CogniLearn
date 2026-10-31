@@ -3,140 +3,121 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>Settings | CogniLearn</title>
 
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/private/settings.css') }}"
     />
+
+    <script>
+      // Apply the saved theme before the page is displayed.
+      document.documentElement.dataset.theme =
+        localStorage.getItem("cognilearn_theme") || "light";
+    </script>
   </head>
 
   <body>
     <div class="settings-container">
-      <aside class="sidebar">
-        <h2 class="logo">Cogni<span>Learn</span></h2>
+      <aside class="settings-sidebar">
+        <h2>CogniLearn</h2>
+        <p class="sidebar-subtitle">Your learning space</p>
 
         <nav>
           <a href="{{ url_for('dashboard') }}">Dashboard</a>
-          <a href="{{ url_for('profile') }}">My Profile</a>
-          <a href="{{ url_for('chat') }}">Messages</a>
-          <a href="{{ url_for('ai') }}">AI Learning</a>
+          <a href="{{ url_for('profile') }}">Profile</a>
+          <a href="{{ url_for('chat') }}">Chats</a>
+          <a href="{{ url_for('ai') }}">AI Assistant</a>
           <a href="{{ url_for('settings') }}" class="active">Settings</a>
         </nav>
 
-        <a href="{{ url_for('logout') }}" class="logout">Logout</a>
+        <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
       </aside>
 
-      <main class="main-content">
-        <header class="page-header">
+      <main class="settings-main">
+        <header class="settings-header">
           <div>
-            <p class="eyebrow">PERSONALIZATION</p>
             <h1>Settings</h1>
-            <p>Customize your CogniLearn experience.</p>
+            <p>Personalize your CogniLearn experience.</p>
           </div>
         </header>
 
-        <section class="settings-section">
+        <section class="settings-card">
           <h2>Appearance</h2>
-          <p>Customize how CogniLearn looks.</p>
+          <p>Choose how CogniLearn looks across the website.</p>
 
-          <div class="setting-row">
-            <div>
-              <h3>Theme</h3>
-              <p>Choose your preferred appearance.</p>
-            </div>
-
-            <select id="theme">
-              <option value="dark">Dark</option>
-              <option value="light">Light</option>
-              <option value="system">System Default</option>
-            </select>
-          </div>
+          <label for="theme">Website theme</label>
+          <select id="theme">
+            <option value="light">Light Mode</option>
+            <option value="dark">Dark Mode</option>
+          </select>
         </section>
 
-        <section class="settings-section">
+        <section class="settings-card">
           <h2>Notifications</h2>
           <p>Manage your notification preferences.</p>
 
-          <div class="setting-row">
-            <div>
-              <h3>Learning Reminders</h3>
-              <p>Receive reminders about your learning activities.</p>
-            </div>
+          <label class="setting-toggle">
+            <span>Learning reminders</span>
+            <input type="checkbox" id="learningNotifications" />
+          </label>
 
-            <label class="switch">
-              <input type="checkbox" id="reminders" />
-              <span class="slider"></span>
-            </label>
-          </div>
-
-          <div class="setting-row">
-            <div>
-              <h3>Message Notifications</h3>
-              <p>Get notified about new messages.</p>
-            </div>
-
-            <label class="switch">
-              <input type="checkbox" id="messages" />
-              <span class="slider"></span>
-            </label>
-          </div>
+          <label class="setting-toggle">
+            <span>Message notifications</span>
+            <input type="checkbox" id="messageNotifications" />
+          </label>
         </section>
 
-        <section class="settings-section">
+        <section class="settings-card">
           <h2>Learning Preferences</h2>
-          <p>Adjust your learning experience.</p>
+          <p>Customize your learning experience.</p>
 
-          <div class="setting-row">
-            <div>
-              <h3>Preferred Learning Style</h3>
-              <p>Select how you prefer to learn.</p>
-            </div>
+          <label for="learningStyle">Preferred learning style</label>
+          <select id="learningStyle">
+            <option value="mixed">Mixed Learning</option>
+            <option value="visual">Visual Learning</option>
+            <option value="reading">Reading</option>
+            <option value="practical">Practical Learning</option>
+          </select>
 
-            <select id="learningStyle">
-              <option value="visual">Visual</option>
-              <option value="reading">Reading</option>
-              <option value="practical">Practical</option>
-              <option value="mixed">Mixed</option>
-            </select>
-          </div>
-
-          <div class="setting-row">
-            <div>
-              <h3>Daily Learning Goal</h3>
-              <p>Set your preferred daily learning duration.</p>
-            </div>
-
-            <select id="learningGoal">
-              <option value="15">15 Minutes</option>
-              <option value="30">30 Minutes</option>
-              <option value="45">45 Minutes</option>
-              <option value="60">60 Minutes</option>
-            </select>
-          </div>
+          <label for="dailyGoal">Daily learning goal</label>
+          <select id="dailyGoal">
+            <option value="15">15 minutes</option>
+            <option value="30">30 minutes</option>
+            <option value="45">45 minutes</option>
+            <option value="60">60 minutes</option>
+          </select>
         </section>
 
-        <section class="settings-section">
+        <section class="settings-card">
           <h2>Privacy</h2>
-          <p>Manage your privacy preferences.</p>
+          <p>Choose your profile visibility preference.</p>
 
-          <div class="setting-row">
-            <div>
-              <h3>Profile Visibility</h3>
-              <p>Control who can discover your profile.</p>
-            </div>
-
-            <select id="visibility">
-              <option value="public">Public</option>
-              <option value="private">Private</option>
-            </select>
-          </div>
+          <label for="profileVisibility">Profile visibility</label>
+          <select id="profileVisibility">
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+          </select>
+          <p class="setting-note">
+            This preference is saved locally for now. It does not enforce
+            privacy on the server.
+          </p>
         </section>
 
-        <div class="save-area">
-          <p id="saveMessage" role="status" aria-live="polite"></p>
-          <button id="saveSettings">Save Changes</button>
+        <section class="settings-card danger-zone">
+          <h2>Account</h2>
+          <p>Manage your account.</p>
+          <button type="button" class="danger-button" id="deleteAccount">
+            Delete Account
+          </button>
+          <p class="setting-note">Account deletion is not connected yet.</p>
+        </section>
+
+        <div class="settings-actions">
+          <button type="button" id="saveSettings" class="primary-button">
+            Save Settings
+          </button>
+          <span id="saveMessage" aria-live="polite"></span>
         </div>
       </main>
     </div>

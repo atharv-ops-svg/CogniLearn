@@ -1,86 +1,85 @@
-
 document.addEventListener("DOMContentLoaded", () => {
-
-    const settingIds = [
-        "theme",
-        "reminders",
-        "messages",
-        "learningStyle",
-        "learningGoal",
-        "visibility"
-    ];
-
-    const defaults = {
-        theme: "dark",
-        reminders: true,
-        messages: true,
-        learningStyle: "mixed",
-        learningGoal: "30",
-        visibility: "public"
-    };
+    const theme = document.getElementById("theme");
+    const learningNotifications =
+        document.getElementById("learningNotifications");
+    const messageNotifications =
+        document.getElementById("messageNotifications");
+    const learningStyle = document.getElementById("learningStyle");
+    const dailyGoal = document.getElementById("dailyGoal");
+    const profileVisibility =
+        document.getElementById("profileVisibility");
 
     const saveButton = document.getElementById("saveSettings");
     const saveMessage = document.getElementById("saveMessage");
 
+    const keys = {
+        theme: "cognilearn_theme",
+        learningNotifications: "cognilearn_learning_notifications",
+        messageNotifications: "cognilearn_message_notifications",
+        learningStyle: "cognilearn_learning_style",
+        dailyGoal: "cognilearn_daily_goal",
+        profileVisibility: "cognilearn_profile_visibility"
+    };
+
     function loadSettings() {
-        settingIds.forEach(id => {
-            const element = document.getElementById(id);
-            const storedValue = localStorage.getItem("cognilearn_" + id);
+        theme.value = localStorage.getItem(keys.theme) || "light";
 
-            const value = storedValue !== null
-                ? JSON.parse(storedValue)
-                : defaults[id];
+        learningNotifications.checked =
+            localStorage.getItem(keys.learningNotifications) !== "false";
 
-            if (element.type === "checkbox") {
-                element.checked = value;
-            } else {
-                element.value = value;
-            }
-        });
+        messageNotifications.checked =
+            localStorage.getItem(keys.messageNotifications) !== "false";
 
-        applyTheme();
+        learningStyle.value =
+            localStorage.getItem(keys.learningStyle) || "mixed";
+
+        dailyGoal.value =
+            localStorage.getItem(keys.dailyGoal) || "30";
+
+        profileVisibility.value =
+            localStorage.getItem(keys.profileVisibility) || "public";
     }
 
-    function saveSettings() {
-        settingIds.forEach(id => {
-            const element = document.getElementById(id);
+    function applyTheme(selectedTheme) {
+        document.documentElement.dataset.theme = selectedTheme;
+        localStorage.setItem(keys.theme, selectedTheme);
+    }
 
-            const value = element.type === "checkbox"
-                ? element.checked
-                : element.value;
+    // Apply theme immediately when changed.
+    theme.addEventListener("change", () => {
+        applyTheme(theme.value);
+    });
 
-            localStorage.setItem(
-                "cognilearn_" + id,
-                JSON.stringify(value)
-            );
-        });
+    saveButton.addEventListener("click", () => {
+        applyTheme(theme.value);
 
-        applyTheme();
+        localStorage.setItem(
+            keys.learningNotifications,
+            learningNotifications.checked
+        );
+
+        localStorage.setItem(
+            keys.messageNotifications,
+            messageNotifications.checked
+        );
+
+        localStorage.setItem(keys.learningStyle, learningStyle.value);
+        localStorage.setItem(keys.dailyGoal, dailyGoal.value);
+        localStorage.setItem(
+            keys.profileVisibility,
+            profileVisibility.value
+        );
 
         saveMessage.textContent = "Settings saved successfully!";
 
         setTimeout(() => {
             saveMessage.textContent = "";
         }, 3000);
-    }
+    });
 
-    function applyTheme() {
-        const selectedTheme = document.getElementById("theme").value;
-
-        const isLight = selectedTheme === "light" ||
-            (selectedTheme === "system" &&
-            window.matchMedia("(prefers-color-scheme: light)").matches);
-
-        document.body.classList.toggle("light-theme", isLight);
-    }
-
-    saveButton.addEventListener("click", saveSettings);
-
-    document.getElementById("theme").addEventListener(
-        "change",
-        applyTheme
-    );
+    document.getElementById("deleteAccount").addEventListener("click", () => {
+        alert("Account deletion is not available yet. Please contact support.");
+    });
 
     loadSettings();
-
 });
