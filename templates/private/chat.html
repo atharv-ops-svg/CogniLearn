@@ -4,12 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Chat — KnowVia</title>
+    <title>Chat — CogniLearn</title>
+
+    <!-- Apply saved theme before loading styles -->
+    <script>
+      document.documentElement.dataset.theme =
+        localStorage.getItem("cognilearn_theme") || "light";
+    </script>
 
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/private/chat.css') }}"
     />
+
     <link
       rel="icon"
       type="image/png"
@@ -20,14 +27,18 @@
   <body>
     <!-- NAVBAR -->
     <nav class="navbar">
-      <a href="{{ url_for('dashboard') }}" class="nav-brand">KnowVia</a>
+      <a href="{{ url_for('dashboard') }}" class="nav-brand"> CogniLearn </a>
 
       <div class="nav-actions">
-        <a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a>
-        <a href="{{ url_for('chat') }}" class="nav-link active">Chat</a>
-        <a href="{{ url_for('profile') }}" class="nav-link">Profile</a>
-        <a href="{{ url_for('ai') }}" class="kv-ai-button">KV AI</a>
-        <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
+        <a href="{{ url_for('dashboard') }}" class="nav-link"> Dashboard </a>
+
+        <a href="{{ url_for('chat') }}" class="nav-link active"> Chat </a>
+
+        <a href="{{ url_for('profile') }}" class="nav-link"> Profile </a>
+
+        <a href="{{ url_for('ai') }}" class="kv-ai-button"> CogniAI </a>
+
+        <a href="{{ url_for('logout') }}" class="logout-button"> Logout </a>
       </div>
     </nav>
 
@@ -36,8 +47,10 @@
       <!-- HEADER -->
       <header class="chat-header">
         <div>
-          <div class="system-label">KNOWVIA / CONNECTION</div>
+          <div class="system-label">COGNILEARN / CONNECTION</div>
+
           <h1>Skill Exchange</h1>
+
           <p>Learn from someone. Teach someone.</p>
         </div>
 
@@ -52,7 +65,7 @@
         <!-- MATCH SIDEBAR -->
         <aside class="chat-sidebar">
           <div class="sidebar-section">
-            <span class="sidebar-label">PEOPLE YOU CAN LEARN FROM</span>
+            <span class="sidebar-label"> PEOPLE YOU CAN LEARN FROM </span>
 
             <div class="matches-list" id="matches-list" aria-live="polite">
               <div class="matches-loading" id="matches-loading">
@@ -62,11 +75,14 @@
 
             <div class="matches-empty" id="matches-empty" hidden>
               <span class="empty-match-symbol">⇄</span>
+
               <strong>No matches yet</strong>
+
               <p>
                 Add skills you know and want to learn on your profile to find
                 people you can learn from.
               </p>
+
               <a href="{{ url_for('profile') }}" class="profile-link">
                 Update Profile
               </a>
@@ -74,7 +90,9 @@
 
             <div class="matches-error" id="matches-error" hidden>
               <strong>Could not load matches.</strong>
+
               <p>Please refresh the page and try again.</p>
+
               <button type="button" id="retry-matches">Retry</button>
             </div>
           </div>
@@ -105,36 +123,40 @@
 
           <div class="sidebar-note">
             <span>TIP</span>
+
             <p>Ask questions, explain clearly, and help each other improve.</p>
           </div>
         </aside>
 
-        <!-- CHAT -->
+        <!-- CHAT CONTAINER -->
         <div class="chat-container">
-          <!-- CHAT TOP -->
+          <!-- CHAT TOPBAR -->
           <div class="chat-topbar">
             <div class="partner-info">
               <div class="partner-avatar" id="partner-avatar">?</div>
 
-              <div>
-                <strong id="partner-name">Skill Partner</strong>
-                <span id="partner-status">Waiting for connection</span>
+              <div class="partner-details">
+                <strong id="partner-name"> Skill Partner </strong>
+
+                <span id="partner-status"> Waiting for connection </span>
               </div>
             </div>
 
-            <span class="chat-code">SESSION / 01</span>
+            <span class="chat-code"> SESSION / 01 </span>
           </div>
 
           <!-- MESSAGES -->
           <div class="chat-messages" id="chat-messages" aria-live="polite">
             <div class="chat-empty" id="chat-empty">
               <div class="empty-symbol">⇄</div>
+
               <h2>Ready to connect</h2>
+
               <p>Choose a skill partner from the sidebar to begin.</p>
             </div>
           </div>
 
-          <!-- INPUT -->
+          <!-- MESSAGE INPUT -->
           <form class="chat-input-area" id="chat-form">
             <div class="input-wrapper">
               <textarea
@@ -149,7 +171,8 @@
 
               <div class="input-meta">
                 <span>ENTER TO SEND</span>
-                <span id="character-count">0 / 2000</span>
+
+                <span id="character-count"> 0 / 2000 </span>
               </div>
             </div>
 
@@ -168,7 +191,7 @@
 
       <!-- FOOTER -->
       <footer class="chat-footer">
-        <span>KNOWVIA</span>
+        <span>COGNILEARN</span>
         <span>PRIVATE SKILL EXCHANGE</span>
         <span>END-TO-END SESSION</span>
       </footer>
